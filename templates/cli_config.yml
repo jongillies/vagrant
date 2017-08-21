@@ -1,0 +1,12 @@
+:modules:
+  - hammer_cli_foreman
+
+:foreman:
+  :enable_module: true
+  :host: {{ katello_server_url }}
+  :username: {{ lookup('env', 'IDE_USER') }}
+  :password: {{ lookup('env', 'IDE_PASS') }}
+  :verify_ssl: fasle
+
+:log_dir: ~/.foreman/log
+:log_level: error

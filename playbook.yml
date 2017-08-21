@@ -1,0 +1,72 @@
+---
+- hosts: all
+
+  vars:
+    katello_server: katello.com
+    katello_server_port: 8888
+    katello_server_url: "https://{{ katello_server }}:{{ katello_server_port }}/"
+    firewall_server: fw.com
+
+  tasks:
+#    - name: update apt cache
+#      apt:
+#        update_cache: yes
+#        cache_valid_time: 3600
+
+    - name: install prerequisite packages
+      package:
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - python-pip
+
+    - name: install python packages
+      package:
+        name: "{{ item }}"
+        state: latest
+      with_items:
+        - ansible
+
+    - name: create some directories
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: ubuntu
+        group: ubuntu
+      with_items:
+        - .openstack
+        - .foreman
+        - .foreman/log
+        - .hammer
+
+    - name: copy ssh config
+      template:
+        src: ssh_config
+        dest: .ssh/config
+        owner: ubuntu
+        group: ubuntu
+
+    - name: add hosts to /etc/hosts
+      lineinfile:
+        path: /etc/hosts
+        regexp: "^{{ item }}"
+        line: "{{ item}}"
+      with_items:
+        - "127.0.0.1 {{ katello_server }}"
+        - "127.0.0.1 {{ firewall_server }}"
+
+    - name: copy gemfile rc
+      copy:
+        src: dot_gemrc
+        dest: ./.gemrc
+        owner: ubuntu
+        group: ubuntu
+
+    - name: copy hammer configuration
+      template:
+        src: "{{ item }}"
+        dest: ".hammer/{{ item }}"
+        owner: ubuntu
+        group: ubuntu
+      with_items:
+        - cli_config.yml

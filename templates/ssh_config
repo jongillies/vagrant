@@ -1,0 +1,21 @@
+Identityfile ~/.ssh/id_rsa
+
+StrictHostKeyChecking no
+
+Host *
+  ServerAliveInterval 60
+
+host one.com
+  Hostname one.com
+  IdentityFile ~/.ssh/id_rsa
+  Port 2224
+  ServerAliveInterval 60
+  ServerAliveCountMax 3
+
+host two.com
+  Hostname two.com
+  User admin
+  IdentityFile ~/.ssh/id_rsa
+  Port 2223
+  ServerAliveInterval 60
+  ServerAliveCountMax 3

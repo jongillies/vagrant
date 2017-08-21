@@ -1,0 +1,12 @@
+---
+:ssl_verify_mode: 0
+:bulk_threshold: 1000
+:benchmark: false
+:sources:
+- http://rubygems.org/
+:update_sources: true
+gem: --no-ri --no-rdoc
+:backtrace: false
+:verbose: true
+install: --no-ri --no-rdoc
+upgrade: --no-ri --no-rdoc
